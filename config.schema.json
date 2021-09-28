@@ -1,5 +1,5 @@
 {
-  "pluginAlias": "ExampleHomebridgePlugin",
+  "pluginAlias": "JuiceboxHomebridgePlugin",
   "pluginType": "platform",
   "singular": true,
   "schema": {
