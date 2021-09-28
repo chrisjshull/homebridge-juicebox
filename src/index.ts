@@ -1,11 +1,11 @@
 import { API } from 'homebridge';
 
 import { PLATFORM_NAME } from './settings';
-import { JuiceboxHomebridgePlatform } from './platform';
+import { JuiceBoxHomebridgePlatform } from './platform';
 
 /**
  * This method registers the platform with Homebridge
  */
 export = (api: API) => {
-  api.registerPlatform(PLATFORM_NAME, JuiceboxHomebridgePlatform);
+  api.registerPlatform(PLATFORM_NAME, JuiceBoxHomebridgePlatform);
 };

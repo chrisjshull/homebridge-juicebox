@@ -1,26 +1,22 @@
 import { Service, PlatformAccessory, CharacteristicValue } from 'homebridge';
 
-import { JuiceboxHomebridgePlatform } from './platform';
+import { JuiceBoxHomebridgePlatform } from './platform';
 
 /**
  * Platform Accessory
  * An instance of this class is created for each accessory your platform registers
  * Each accessory may expose multiple services of different service types.
  */
-export class JuiceboxPlatformAccessory {
+export class JuiceBoxPlatformAccessory {
   private service: Service;
 
-  /**
-   * These are just used to create a working example
-   * You should implement your own code to track the state of your accessory
-   */
-  private exampleStates = {
-    On: false,
-    Brightness: 100,
+  private states = {
+    // On: false,
+    // Brightness: 100,
   };
 
   constructor(
-    private readonly platform: JuiceboxHomebridgePlatform,
+    private readonly platform: JuiceBoxHomebridgePlatform,
     private readonly accessory: PlatformAccessory,
   ) {
 
