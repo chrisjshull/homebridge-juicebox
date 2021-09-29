@@ -5,11 +5,11 @@
   "schema": {
     "type": "object",
     "properties": {
-      "name": {
-        "title": "Name",
+      "apiToken": {
+        "title": "JuiceNet API Token (https://home.juice.net/Manage)",
         "type": "string",
         "required": true,
-        "default": "Example Dynamic Platform"
+        "default": ""
       }
     }
   }
