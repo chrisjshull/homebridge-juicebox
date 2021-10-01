@@ -13,6 +13,7 @@ export class JuiceBoxPlatformAccessoryHandler {
   private pollTimeoutId: NodeJS.Timeout|null = null;
 
   private service: Service;
+  private loggingService: any;
 
   private state: Record<string, any> = {
   };
@@ -67,8 +68,10 @@ export class JuiceBoxPlatformAccessoryHandler {
     // this.service.getCharacteristic(this.platform.KilowattVoltAmpereHour)
     //   .onGet(this.getKilowattVoltAmpereHour.bind(this));
 
-
-    this.pausePolling(0);
+    // built in timer never starts?
+    this.loggingService = new this.platform.FakeGatoHistoryService('energy', accessory, { size: 120960, disableTimer: true, storage: 'fs', log: this.platform.log });
+    // this.platform.api['globalFakeGatoTimer'].start();
+    this.pausePolling(0); // start polling
   }
 
   private pausePolling(ms = 1000) {
@@ -87,6 +90,8 @@ export class JuiceBoxPlatformAccessoryHandler {
       if (startPollTimeoutId !== this.pollTimeoutId) {
         return; // ignore if polling was deferred
       }
+
+      this.platform.log.debug('Updating from poll...');
 
       if (chargerState.state === 'error' || chargerState.state === 'disconnect') {
         throw new Error('chargerState.state = ' + chargerState.state);
@@ -109,6 +114,8 @@ export class JuiceBoxPlatformAccessoryHandler {
       this.service.updateCharacteristic(this.platform.KilowattHours, await this.getKilowattHours());
       // this.service.updateCharacteristic(this.platform.VoltAmperes, await this.getVoltAmperes());
       // this.service.updateCharacteristic(this.platform.KilowattVoltAmpereHour, await this.getKilowattVoltAmpereHour());
+
+      this.loggingService.addEntry({time: Math.round(new Date().valueOf() / 1000), power: await this.getWatts()});
 
     } catch (e) {
       this.platform.log.error(e);
@@ -154,13 +161,16 @@ export class JuiceBoxPlatformAccessoryHandler {
 
     this.overrides.on = value;
     if (value) {
-      await this.handleJuiceNetErrors(juicenet.startChargingAsync(this.platform.config.apiToken, this.accessory.context.device.token));
+      const {response} = await this.handleJuiceNetErrors(juicenet.startChargingAsync(this.platform.config.apiToken, this.accessory.context.device.token));
+      this.platform.log.debug(response.body);
     } else {
-      await this.handleJuiceNetErrors(juicenet.stopChargingAsync(this.platform.config.apiToken, this.accessory.context.device.token));
+      const {response} = await this.handleJuiceNetErrors(juicenet.stopChargingAsync(this.platform.config.apiToken, this.accessory.context.device.token));
+      this.platform.log.debug(response.body);
     }
 
     // set seems to take ~30+=10s to "take" during which it shows the old state (for some state transitions)
     // this may be related to the device's update interval?
+    // todo: this might be even longer for turning off while charging?
     this.pausePolling(30 * 1000);
   }
 
@@ -189,7 +199,7 @@ export class JuiceBoxPlatformAccessoryHandler {
 
     // Also show On for a plugged in car that is fully charged
     // todo: verify this in the TOU timeframe
-    const isOn = this.state.state === 'charging' || (this.state.state === 'plugged' && this.state.target_time === this.state.default_target_time);
+    const isOn = this.state.state === 'charging' || (this.state.state === 'plugged' && this.state.target_time === this.state.default_target_time && this.state.unit_time >= this.state.default_target_time);
     this.platform.log.debug('Get Characteristic On ->', isOn);
 
     // TODO; handle other states

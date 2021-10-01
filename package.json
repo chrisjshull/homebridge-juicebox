@@ -42,6 +42,7 @@
     "typescript": "^4.2.2"
   },
   "dependencies": {
+    "fakegato-history": "^0.6.2",
     "node-juicenet": "^1.0.2"
   }
 }

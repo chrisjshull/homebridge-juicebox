@@ -118,3 +118,7 @@ dist
 .yarn/unplugged
 .yarn/build-state.yml
 .pnp.*
+
+# project
+test_homebridge_storage/backups
+test_homebridge_storage/*_persist.json

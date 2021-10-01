@@ -4,6 +4,8 @@ import { PLATFORM_NAME, PLUGIN_NAME } from './settings';
 import { JuiceBoxPlatformAccessoryHandler } from './platformAccessory';
 
 import juicenet from 'node-juicenet';
+import fakegato from 'fakegato-history';
+
 
 /**
  * HomebridgePlatform
@@ -16,6 +18,8 @@ export class JuiceBoxHomebridgePlatform implements DynamicPlatformPlugin {
 
   // this is used to track restored cached accessories
   public readonly accessories: PlatformAccessory[] = [];
+
+  public readonly FakeGatoHistoryService = fakegato(this.api);
 
   public Volts: any; // todo type as Characteristic
   public Amperes: any; // todo type as Characteristic
@@ -54,7 +58,6 @@ export class JuiceBoxHomebridgePlatform implements DynamicPlatformPlugin {
     this.KilowattHours = makeCharacteristic('Total Consumption', 'kWh', 0.001, 'E863F10C-079E-48FF-8F27-9C2605A29F52');
     this.VoltAmperes = makeCharacteristic('Apparent Power', 'VA', 0.1, 'E863F10C-079E-48FF-8F27-9C2605A29F52');
     this.KilowattVoltAmpereHour = makeCharacteristic('Apparent Energy', 'kVAh', 1, 'E863F10C-079E-48FF-8F27-9C2605A29F52', api.hap.Formats.UINT32);
-
 
     // When this event is fired it means Homebridge has restored all cached accessories from disk.
     // Dynamic Platform plugins should only register new accessories after this event was fired,
