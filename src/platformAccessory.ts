@@ -13,13 +13,13 @@ export class JuiceBoxPlatformAccessoryHandler {
   private pollTimeoutId: NodeJS.Timeout|null = null;
 
   private service: Service;
-  private loggingService: any;
+  private loggingService: { addEntry: (arg0: { time: number; power: CharacteristicValue }) => void };
 
-  private state: Record<string, any> = {
-  };
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  private state: { state?: any; target_time?: any; default_target_time?: any; unit_time?: any; charging?: any } = {};
 
-  private overrides: Record<string, any> = {
-  };
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  private overrides: { on?: any } = {};
 
   private error: unknown = null;
 
@@ -69,7 +69,8 @@ export class JuiceBoxPlatformAccessoryHandler {
     //   .onGet(this.getKilowattVoltAmpereHour.bind(this));
 
     // built in timer never starts?
-    this.loggingService = new this.platform.FakeGatoHistoryService('energy', accessory, { size: 120960, disableTimer: true, storage: 'fs', log: this.platform.log });
+    this.loggingService = new this.platform.FakeGatoHistoryService(
+      'energy', accessory, { size: 120960, disableTimer: true, storage: 'fs', log: this.platform.log });
     // this.platform.api['globalFakeGatoTimer'].start();
     this.pausePolling(0); // start polling
   }
@@ -86,7 +87,8 @@ export class JuiceBoxPlatformAccessoryHandler {
     this.platform.log.debug('Polling...');
     try {
       const startPollTimeoutId = this.pollTimeoutId;
-      const {chargerState} = await this.handleJuiceNetErrors(juicenet.getDeviceStateAsync(this.platform.config.apiToken, this.accessory.context.device.token));
+      const {chargerState} =
+        await this.handleJuiceNetErrors(juicenet.getDeviceStateAsync(this.platform.config.apiToken, this.accessory.context.device.token));
       if (startPollTimeoutId !== this.pollTimeoutId) {
         return; // ignore if polling was deferred
       }
@@ -104,7 +106,8 @@ export class JuiceBoxPlatformAccessoryHandler {
       this.overrides = {};
       // this does not work dynamically:
       // this.service.getCharacteristic(this.platform.Characteristic.On).setProps({
-      //   perms: chargerState.state === 'standby' ? [Perms.PAIRED_READ, Perms.NOTIFY] : [Perms.PAIRED_WRITE, Perms.PAIRED_READ, Perms.NOTIFY],
+      //   perms: chargerState.state === 'standby'
+      //     ? [Perms.PAIRED_READ, Perms.NOTIFY] : [Perms.PAIRED_WRITE, Perms.PAIRED_READ, Perms.NOTIFY],
       // });
       this.service.updateCharacteristic(this.platform.Characteristic.On, await this.getOn());
       this.service.updateCharacteristic(this.platform.Characteristic.OutletInUse, await this.getOutletInUse());
@@ -161,10 +164,12 @@ export class JuiceBoxPlatformAccessoryHandler {
 
     this.overrides.on = value;
     if (value) {
-      const {response} = await this.handleJuiceNetErrors(juicenet.startChargingAsync(this.platform.config.apiToken, this.accessory.context.device.token));
+      const {response} =
+        await this.handleJuiceNetErrors(juicenet.startChargingAsync(this.platform.config.apiToken, this.accessory.context.device.token));
       this.platform.log.debug(response.body);
     } else {
-      const {response} = await this.handleJuiceNetErrors(juicenet.stopChargingAsync(this.platform.config.apiToken, this.accessory.context.device.token));
+      const {response} =
+        await this.handleJuiceNetErrors(juicenet.stopChargingAsync(this.platform.config.apiToken, this.accessory.context.device.token));
       this.platform.log.debug(response.body);
     }
 
@@ -199,7 +204,11 @@ export class JuiceBoxPlatformAccessoryHandler {
 
     // Also show On for a plugged in car that is fully charged
     // todo: verify this in the TOU timeframe
-    const isOn = this.state.state === 'charging' || (this.state.state === 'plugged' && this.state.target_time === this.state.default_target_time && this.state.unit_time >= this.state.default_target_time);
+    const isOn = this.state.state === 'charging'
+      || (
+        this.state.state === 'plugged'
+          && this.state.target_time === this.state.default_target_time && this.state.unit_time >= this.state.default_target_time
+      );
     this.platform.log.debug('Get Characteristic On ->', isOn);
 
     // TODO; handle other states

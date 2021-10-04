@@ -1,4 +1,4 @@
-import { API, DynamicPlatformPlugin, Logger, PlatformAccessory, PlatformConfig, Service, Characteristic } from 'homebridge';
+import { API, DynamicPlatformPlugin, Logger, PlatformAccessory, PlatformConfig, Service, Characteristic, WithUUID } from 'homebridge';
 
 import { PLATFORM_NAME, PLUGIN_NAME } from './settings';
 import { JuiceBoxPlatformAccessoryHandler } from './platformAccessory';
@@ -21,12 +21,17 @@ export class JuiceBoxHomebridgePlatform implements DynamicPlatformPlugin {
 
   public readonly FakeGatoHistoryService = fakegato(this.api);
 
-  public Volts: any; // todo type as Characteristic
-  public Amperes: any; // todo type as Characteristic
-  public Watts: any; // todo type as Characteristic
-  public KilowattHours: any; // todo type as Characteristic
-  public VoltAmperes: any; // todo type as Characteristic
-  public KilowattVoltAmpereHour: any; // todo type as Characteristic
+  public Volts: WithUUID<new () => Characteristic>; // todo type as Characteristic
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  public Amperes: WithUUID<new () => Characteristic>; // todo type as Characteristic
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  public Watts: WithUUID<new () => Characteristic>; // todo type as Characteristic
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  public KilowattHours: WithUUID<new () => Characteristic>; // todo type as Characteristic
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  public VoltAmperes: WithUUID<new () => Characteristic>; // todo type as Characteristic
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  public KilowattVoltAmpereHour: WithUUID<new () => Characteristic>; // todo type as Characteristic
 
   constructor(
     public readonly log: Logger,
@@ -57,7 +62,8 @@ export class JuiceBoxHomebridgePlatform implements DynamicPlatformPlugin {
     this.Watts = makeCharacteristic('Consumption', 'W', 0.1, 'E863F10D-079E-48FF-8F27-9C2605A29F52');
     this.KilowattHours = makeCharacteristic('Total Consumption', 'kWh', 0.001, 'E863F10C-079E-48FF-8F27-9C2605A29F52');
     this.VoltAmperes = makeCharacteristic('Apparent Power', 'VA', 0.1, 'E863F10C-079E-48FF-8F27-9C2605A29F52');
-    this.KilowattVoltAmpereHour = makeCharacteristic('Apparent Energy', 'kVAh', 1, 'E863F10C-079E-48FF-8F27-9C2605A29F52', api.hap.Formats.UINT32);
+    this.KilowattVoltAmpereHour =
+      makeCharacteristic('Apparent Energy', 'kVAh', 1, 'E863F10C-079E-48FF-8F27-9C2605A29F52', api.hap.Formats.UINT32);
 
     // When this event is fired it means Homebridge has restored all cached accessories from disk.
     // Dynamic Platform plugins should only register new accessories after this event was fired,
