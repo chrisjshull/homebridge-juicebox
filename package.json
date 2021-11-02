@@ -43,6 +43,9 @@
   },
   "dependencies": {
     "fakegato-history": "^0.6.2",
-    "node-juicenet": "^1.0.2"
+    "loglevel": "^1.6.6",
+    "promise": "^8.0.3",
+    "request": "^2.88.0",
+    "uuid": "^3.3.3"
   }
 }

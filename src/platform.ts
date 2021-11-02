@@ -3,7 +3,7 @@ import { API, DynamicPlatformPlugin, Logger, PlatformAccessory, PlatformConfig, 
 import { PLATFORM_NAME, PLUGIN_NAME } from './settings';
 import { JuiceBoxPlatformAccessoryHandler } from './platformAccessory';
 
-import juicenet from 'node-juicenet';
+import juicenet from './juicenet';
 import fakegato from 'fakegato-history';
 
 
@@ -75,7 +75,7 @@ export class JuiceBoxHomebridgePlatform implements DynamicPlatformPlugin {
       try {
         await this.discoverDevices();
       } catch (e) {
-        this.log.error(e);
+        this.log.error('' + e);
       }
     });
   }
@@ -106,6 +106,11 @@ export class JuiceBoxHomebridgePlatform implements DynamicPlatformPlugin {
 
     // loop over the discovered devices and register each one if it has not already been registered
     for (const device of devices) {
+      if (this.config.ignoredIds && this.config.ignoredIds.includes(device.unit_id)) {
+        this.log.info('Skipping device with ID: ' + device.unit_id);
+        continue;
+      }
+
       // generate a unique id for the accessory this should be generated from
       // something globally unique, but constant, for example, the device serial
       // number or MAC address

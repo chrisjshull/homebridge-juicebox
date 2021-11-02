@@ -2,7 +2,7 @@ import { Service, PlatformAccessory, CharacteristicValue } from 'homebridge';
 
 import { JuiceBoxHomebridgePlatform } from './platform';
 
-import juicenet from 'node-juicenet';
+import juicenet from './juicenet';
 
 /**
  * Platform Accessory
@@ -121,7 +121,7 @@ export class JuiceBoxPlatformAccessoryHandler {
       this.loggingService.addEntry({time: Math.round(new Date().valueOf() / 1000), power: await this.getWatts()});
 
     } catch (e) {
-      this.platform.log.error(e);
+      this.platform.log.error('' + e);
       this.state = {};
       this.error = e;
       this.overrides = {};
@@ -133,7 +133,7 @@ export class JuiceBoxPlatformAccessoryHandler {
     try {
       ret = await promise;
     } catch (e) {
-      this.platform.log.error(e);
+      this.platform.log.error('' + e);
       throw new this.platform.api.hap.HapStatusError(this.platform.api.hap.HAPStatus.SERVICE_COMMUNICATION_FAILURE);
     }
 
