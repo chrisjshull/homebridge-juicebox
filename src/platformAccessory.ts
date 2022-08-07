@@ -16,7 +16,7 @@ export class JuiceBoxPlatformAccessoryHandler {
   private loggingService: { addEntry: (arg0: { time: number; power: CharacteristicValue }) => void };
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  private state: { temperature?: any, state?: any; target_time?: any; default_target_time?: any; unit_time?: any; charging?: any } = {};
+  private state: { temperature?: any; state?: any; target_time?: any; default_target_time?: any; unit_time?: any; charging?: any } = {};
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   private overrides: { on?: any } = {};
