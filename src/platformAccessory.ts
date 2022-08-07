@@ -10,13 +10,13 @@ import juicenet from './juicenet';
  * Each accessory may expose multiple services of different service types.
  */
 export class JuiceBoxPlatformAccessoryHandler {
-  private pollTimeoutId: NodeJS.Timeout|null = null;
+  private pollTimeoutId: NodeJS.Timeout | null = null;
 
   private service: Service;
   private loggingService: { addEntry: (arg0: { time: number; power: CharacteristicValue }) => void };
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  private state: { state?: any; target_time?: any; default_target_time?: any; unit_time?: any; charging?: any } = {};
+  private state: { temperature?: any, state?: any; target_time?: any; default_target_time?: any; unit_time?: any; charging?: any } = {};
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   private overrides: { on?: any } = {};
@@ -39,6 +39,8 @@ export class JuiceBoxPlatformAccessoryHandler {
     // get the Outlet service if it exists, otherwise create a new Outlet service
     // you can create multiple services for each accessory
     this.service = this.accessory.getService(this.platform.Service.Outlet) || this.accessory.addService(this.platform.Service.Outlet);
+
+    // this.service.addCharacteristic(Characteristic.CurrentTemperature);
 
     // set the service name, this is what is displayed as the default name on the Home app
     // in this example we are using the name we stored in the `accessory.context` in the `discoverDevices` method.
@@ -67,6 +69,8 @@ export class JuiceBoxPlatformAccessoryHandler {
     //   .onGet(this.getVoltAmperes.bind(this));
     // this.service.getCharacteristic(this.platform.KilowattVoltAmpereHour)
     //   .onGet(this.getKilowattVoltAmpereHour.bind(this));
+    this.service.getCharacteristic(Characteristic.CurrentTemperature)
+      .onGet(this.getCurrentTemperature.bind(this));
 
     // built in timer never starts?
     this.loggingService = new this.platform.FakeGatoHistoryService(
@@ -87,7 +91,7 @@ export class JuiceBoxPlatformAccessoryHandler {
     this.platform.log.debug('Polling...');
     try {
       const startPollTimeoutId = this.pollTimeoutId;
-      const {chargerState} =
+      const { chargerState } =
         await this.handleJuiceNetErrors(juicenet.getDeviceStateAsync(this.platform.config.apiToken, this.accessory.context.device.token));
       if (startPollTimeoutId !== this.pollTimeoutId) {
         return; // ignore if polling was deferred
@@ -95,11 +99,12 @@ export class JuiceBoxPlatformAccessoryHandler {
 
       this.platform.log.debug('Updating from poll...');
 
+      this.platform.log.debug(JSON.stringify(chargerState));
+
       if (chargerState.state === 'error' || chargerState.state === 'disconnect') {
         throw new Error('chargerState.state = ' + chargerState.state);
       }
 
-      // this.platform.log.debug(chargerState);
 
       this.state = chargerState;
       this.error = null;
@@ -117,8 +122,9 @@ export class JuiceBoxPlatformAccessoryHandler {
       this.service.updateCharacteristic(this.platform.KilowattHours, await this.getKilowattHours());
       // this.service.updateCharacteristic(this.platform.VoltAmperes, await this.getVoltAmperes());
       // this.service.updateCharacteristic(this.platform.KilowattVoltAmpereHour, await this.getKilowattVoltAmpereHour());
+      this.service.updateCharacteristic(this.platform.Characteristic.CurrentTemperature, await this.getCurrentTemperature());
 
-      this.loggingService.addEntry({time: Math.round(new Date().valueOf() / 1000), power: await this.getWatts()});
+      this.loggingService.addEntry({ time: Math.round(new Date().valueOf() / 1000), power: await this.getWatts() });
 
     } catch (e) {
       this.platform.log.error('' + e);
@@ -164,11 +170,11 @@ export class JuiceBoxPlatformAccessoryHandler {
 
     this.overrides.on = value;
     if (value) {
-      const {response} =
+      const { response } =
         await this.handleJuiceNetErrors(juicenet.startChargingAsync(this.platform.config.apiToken, this.accessory.context.device.token));
       this.platform.log.debug(response.body);
     } else {
-      const {response} =
+      const { response } =
         await this.handleJuiceNetErrors(juicenet.stopChargingAsync(this.platform.config.apiToken, this.accessory.context.device.token));
       this.platform.log.debug(response.body);
     }
@@ -207,7 +213,7 @@ export class JuiceBoxPlatformAccessoryHandler {
     const isOn = this.state.state === 'charging'
       || (
         this.state.state === 'plugged'
-          && this.state.target_time === this.state.default_target_time && this.state.unit_time >= this.state.default_target_time
+        && this.state.target_time === this.state.default_target_time && this.state.unit_time >= this.state.default_target_time
       );
     this.platform.log.debug('Get Characteristic On ->', isOn);
 
@@ -262,6 +268,16 @@ export class JuiceBoxPlatformAccessoryHandler {
     this.platform.log.debug('Get Characteristic KilowattHours ->', value);
     return value;
   }
+
+  async getCurrentTemperature(): Promise<CharacteristicValue> {
+    if (this.error) {
+      throw new this.platform.api.hap.HapStatusError(this.platform.api.hap.HAPStatus.SERVICE_COMMUNICATION_FAILURE);
+    }
+    const value = this.state.temperature;
+    this.platform.log.debug('Get Characteristic CurrentTemperature ->', value);
+    return value;
+  }
+
 
   // async getVoltAmperes(): Promise<CharacteristicValue> {
   //   if (this.error) {

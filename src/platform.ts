@@ -98,7 +98,7 @@ export class JuiceBoxHomebridgePlatform implements DynamicPlatformPlugin {
    */
   async discoverDevices() {
     const cachedNotFound = new Set(this.accessories);
-    const {devices, response} = await juicenet.getDevicesAsync(this.config.apiToken);
+    const { devices, response } = await juicenet.getDevicesAsync(this.config.apiToken);
     if (!response.body.success) {
       this.log.error(response.body);
       throw new Error('Could not connect to JuiceNet.');
