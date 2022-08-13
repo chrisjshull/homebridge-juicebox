@@ -94,3 +94,4 @@ sudo npm install -g homebridge-example-plugin@beta
 ```
 
 
+This is not an officially supported Google product.
