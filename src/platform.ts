@@ -17,7 +17,7 @@ import { API, DynamicPlatformPlugin, Logger, PlatformAccessory, PlatformConfig, 
 import { PLATFORM_NAME, PLUGIN_NAME } from './settings';
 import { JuiceBoxPlatformAccessoryHandler } from './platformAccessory';
 
-import juicenet from './juicenet';
+import juicenet from '../third_party/juicenet/juicenet';
 import fakegato from 'fakegato-history';
 
 

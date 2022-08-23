@@ -90,7 +90,7 @@ npm publish --tag=beta
 Users can then install the  *beta* version by appending `@beta` to the install command, for example:
 
 ```
-sudo npm install -g homebridge-example-plugin@beta
+sudo npm install -g homebridge-juicebox@beta
 ```
 
 

@@ -16,7 +16,7 @@ import { Service, PlatformAccessory, CharacteristicValue } from 'homebridge';
 
 import { JuiceBoxHomebridgePlatform } from './platform';
 
-import juicenet from './juicenet';
+import juicenet from '../third_party/juicenet/juicenet';
 
 /**
  * Platform Accessory
