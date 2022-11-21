@@ -120,7 +120,7 @@ export class JuiceBoxHomebridgePlatform implements DynamicPlatformPlugin {
 
     // loop over the discovered devices and register each one if it has not already been registered
     for (const device of devices) {
-      if (this.config.ignoredIds && this.config.ignoredIds.includes(device.unit_id)) {
+      if (this.config.ignoredIDs && this.config.ignoredIDs.includes(device.unit_id)) {
         this.log.info('Skipping device with ID: ' + device.unit_id);
         continue;
       }

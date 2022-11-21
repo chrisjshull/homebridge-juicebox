@@ -10,6 +10,14 @@
         "type": "string",
         "required": true,
         "default": ""
+      },
+      "ignoredIDs": {
+        "title": "Device IDs to Ignore",
+        "type": "array",
+        "items": {
+          "title": "Device ID",
+          "type": "string"
+        }
       }
     }
   }
