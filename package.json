@@ -1,6 +1,6 @@
 {
   "displayName": "Homebridge JuiceBox",
-  "name": "@chrisjshull/homebridge-juicebox",
+  "name": "homebridge-juicebox",
   "version": "0.9.1",
   "description": "Connect your Enel X JuiceBox (JuiceNet) to HomeKit.",
   "license": "Apache-2.0",

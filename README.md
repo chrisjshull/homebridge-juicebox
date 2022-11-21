@@ -35,6 +35,11 @@ Example config.json:
 }
 ```
 
+## Thanks
+
+- Thanks to @ketsugi for the initial implementation of teh JuiceNet API.
+- Thanks to @bwp91 for transferring the ownership of "homebridge-juicebox" on npm.
+
 ## Development
 
 ### Setup Development Environment
