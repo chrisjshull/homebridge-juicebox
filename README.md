@@ -10,7 +10,9 @@
 
 # Homebridge JuiceBox
 
-Exposes your JuiceBox EV chargers as outlets in HomeKit. Also exposes the "in use" characteristic for when a car is plugged in or not ("in use" can be true even when the charger is not providing power), as well as the Volts, Amps, Watts, Kilowatt Hours, and Current Temperature as reported by each device.
+Connect your Enel X JuiceBox (JuiceNet) to HomeKit.
+
+Shows as outlets in HomeKit. Also exposes the "in use" characteristic for when a car is plugged in or not ("in use" can be true even when the charger is not providing power), as well as the Volts, Amps, Watts, Kilowatt Hours, and Current Temperature as reported by each device.
 
 Stopping charging attempts to act as much like stopping charging from the "EV JuiceNet" app as possible (which appears to be achieved by delaying charging for ~1 year).
 
