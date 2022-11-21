@@ -12,14 +12,15 @@
     "declarationMap": true,
     "sourceMap": true,
     "outDir": "./dist",
-    "rootDir": "./src",
+    "rootDir": "./",
     "strict": true,
     "esModuleInterop": true,
     "noImplicitAny": false,
     "allowJs": true
   },
   "include": [
-    "src/"
+    "src/",
+    "third_party/"
   ],
   "exclude": [
     "**/*.spec.ts"
