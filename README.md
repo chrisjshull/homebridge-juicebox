@@ -1,9 +1,9 @@
 
-<p style="text-align: center">
+<p align="center">
 
-<img alt="Homebridge" src="https://github.com/homebridge/branding/raw/master/logos/homebridge-wordmark-logo-vertical.png" width="150"> 
+<img alt="Homebridge" src="https://github.com/homebridge/branding/raw/master/logos/homebridge-wordmark-logo-vertical.png" height="150"> 
 
-<img alt="EV Charger" src="https://user-images.githubusercontent.com/877679/203036918-5cf9dc33-a14b-450e-9413-77d4f7abf0aa.svg" width="150">
+<img alt="EV Charger" src="https://user-images.githubusercontent.com/877679/203036918-5cf9dc33-a14b-450e-9413-77d4f7abf0aa.svg" height="150">
 
 </p>
 
