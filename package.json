@@ -1,5 +1,4 @@
 {
-  "private": true,
   "displayName": "Homebridge JuiceBox",
   "name": "homebridge-juicebox",
   "version": "0.1.0",
