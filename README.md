@@ -5,6 +5,11 @@
 
 <img alt="EV Charger" src="https://user-images.githubusercontent.com/877679/203036918-5cf9dc33-a14b-450e-9413-77d4f7abf0aa.svg" height="150">
 
+<br>
+
+[![npm](https://badgen.net/npm/v/homebridge-juicebox)](https://npmjs.com/package/homebridge-juicebox)
+[![verified-by-homebridge](https://badgen.net/badge/homebridge/verified/purple)](https://github.com/homebridge/homebridge/wiki/Verified-Plugins)
+
 </p>
 
 
