@@ -21,8 +21,6 @@ Shows as outlets in HomeKit. Also exposes the "in use" characteristic for when a
 
 Stopping charging attempts to act as much like stopping charging from the "EV JuiceNet" app as possible (which appears to be achieved by delaying charging for ~1 year).
 
-This is not an officially supported Google product.
-
 ## Setup
 
 To get your JuiceNet API Token, go to https://home.juice.net/Manage and click "Generate API Token".
@@ -127,3 +125,9 @@ Users can then install the  *beta* version by appending `@beta` to the install c
 ```
 sudo npm install -g homebridge-juicebox@beta
 ```
+
+## Disclaimers
+
+[Apache License Version 2.0](https://raw.githubusercontent.com/chrisjshull/homebridge-juicebox/master/LICENSE)
+
+This is not an officially supported Google product.
