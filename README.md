@@ -5,6 +5,11 @@
 
 <img alt="EV Charger" src="https://user-images.githubusercontent.com/877679/203036918-5cf9dc33-a14b-450e-9413-77d4f7abf0aa.svg" height="150">
 
+<br>
+
+[![npm](https://badgen.net/npm/v/homebridge-juicebox)](https://npmjs.com/package/homebridge-juicebox)
+[![verified-by-homebridge](https://badgen.net/badge/homebridge/verified/purple)](https://github.com/homebridge/homebridge/wiki/Verified-Plugins)
+
 </p>
 
 
@@ -15,8 +20,6 @@ Connect your Enel X JuiceBox (JuiceNet) to HomeKit.
 Shows as outlets in HomeKit. Also exposes the "in use" characteristic for when a car is plugged in or not ("in use" can be true even when the charger is not providing power), as well as the Volts, Amps, Watts, Kilowatt Hours, and Current Temperature as reported by each device.
 
 Stopping charging attempts to act as much like stopping charging from the "EV JuiceNet" app as possible (which appears to be achieved by delaying charging for ~1 year).
-
-This is not an officially supported Google product.
 
 ## Setup
 
@@ -122,3 +125,9 @@ Users can then install the  *beta* version by appending `@beta` to the install c
 ```
 sudo npm install -g homebridge-juicebox@beta
 ```
+
+## Disclaimers
+
+[Apache License Version 2.0](https://raw.githubusercontent.com/chrisjshull/homebridge-juicebox/master/LICENSE)
+
+This is not an officially supported Google product.
