@@ -22,14 +22,14 @@ This is not an officially supported Google product.
 
 To get your JuiceNet API Token, go to https://home.juice.net/Manage and click "Generate API Token".
 
-If you have multiple JuiceBox devices on your account, but only want to expose some of them (e.g. for different homes) then you can specify `ignoredIDs` - device IDs can be found at https://home.juice.net/Portal.
+If you have multiple JuiceBox devices on your account, but only want to expose some of them (e.g. for different homes) then you can specify `ignoredIds` - device IDs can be found at https://home.juice.net/Portal.
 
 Example config.json:
 ```
 {
     "platform": "JuiceBoxHomebridgePlugin"
     "apiToken": "...required...",
-    "ignoredIDs": [
+    "ignoredIds": [
         "...optional..."
     ]
 }
